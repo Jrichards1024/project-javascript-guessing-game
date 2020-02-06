@@ -13,8 +13,8 @@ function testNewGameIsNotDone() {
 function testIncompleteGameIsNotDone() {
   let game = newGuessingGame('abc');
 
-  guessingGameMakeGuess('a');
-  guessingGameMakeGuess('b');
+  guessingGameMakeGuess(game, 'a');
+  guessingGameMakeGuess(game, 'b');
 
   testEquals(guessingGameIsDone(game), false, 'Game is not done before we guess every letter');
 }
@@ -22,9 +22,9 @@ function testIncompleteGameIsNotDone() {
 function testCompleteGameIsDone() {
   let game = newGuessingGame('abc');
 
-  guessingGameMakeGuess('a');
-  guessingGameMakeGuess('b');
-  guessingGameMakeGuess('c');
+  guessingGameMakeGuess(game, 'a');
+  guessingGameMakeGuess(game, 'b');
+  guessingGameMakeGuess(game, 'c');
 
   testEquals(guessingGameIsDone(game), true, 'Game is done once we guess every letter');
 }

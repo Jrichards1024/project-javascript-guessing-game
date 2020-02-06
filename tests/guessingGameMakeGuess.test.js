@@ -22,7 +22,7 @@ function testCorrectGuessUpdatesCurrentWord() {
 
   guessingGameMakeGuess(game, 'l');
 
-  testEquals(game.currentWord, expectedCurrentWord, 'Makeing correct guess correctly updates currentWord');
+  testEquals(game.currentWord, expectedCurrentWord, 'Making correct guess correctly updates currentWord');
 }
 
 function testIncorrectGuessDoesNotUpdateCurrentWord() {
