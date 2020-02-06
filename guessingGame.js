@@ -1,6 +1,7 @@
 let newGuessingGame = require('./lib/newGuessingGame');
 let guessingGameMakeGuess = require('./lib/guessingGameMakeGuess');
 let guessingGameIsDone = require('./lib/guessingGameIsDone');
+let hangman = require('./lib/hangman')
 let readlineSync;
 try {
   readlineSync = require('readline-sync');
@@ -13,8 +14,10 @@ try {
 
   process.exit();
 }
+let wordToGuess = readlineSync.question('What word should be guessed?: ', { hideEchoBack: true});
+wordToGuess = wordToGuess.toLowerCase()
 
-let wordToGuess = 'hello';
+//let wordToGuess = 'hello';
 
 function amountGuess(word) {
   noRepeats = []
@@ -29,29 +32,39 @@ function amountGuess(word) {
 }
 amountGuess(wordToGuess)
 
-let game = newGuessingGame('onomatopoeia');
+let game = newGuessingGame(wordToGuess);
 
-console.log(`"Guessing" the word '${wordToGuess}', one letter at a time.`);
 console.log();
 
-for (let i = 0; i < noRepeats.length + 2; i++) {
+for (let i = 0; i < noRepeats.length * 100 ; i++) {
   letter = readlineSync.question("Guess a letter: ")
-  console.log(`Guessing letter: ${letter}`);
+  letter = letter.toLowerCase()
 
   guessingGameMakeGuess(game, letter);
 
+
+  hangman(game.numWrongGuesses)
+
   console.log(`Current word is: ${game.currentWord}`);
   console.log();
+
+  if (game.numWrongGuesses === 6) {
+    i = noRepeats.length * 100
+
+  }
   if (guessingGameIsDone(game)) {
-    i = noRepeats.length + 2
+    i = noRepeats.length * 100;
   }
     ;
 }
 
 let isGameDone = guessingGameIsDone(game);
 
-console.log(`We have guessed every letter in ${wordToGuess}.`);
-console.log(`The game is done? ${isGameDone}`);
+console.log(`The correct word was ${wordToGuess}.`);
+if (isGameDone === true) {
+  console.log ('Congratulations!! You Won!')
+}
+else {console.log('Wow you lost, be better :(')}
 console.log(`How many turns did we take? ${game.numGuesses}`);
 
 // The code below is commented out because it will run
