@@ -1,21 +1,51 @@
 let newGuessingGame = require('./lib/newGuessingGame');
 let guessingGameMakeGuess = require('./lib/guessingGameMakeGuess');
 let guessingGameIsDone = require('./lib/guessingGameIsDone');
+let readlineSync;
+try {
+  readlineSync = require('readline-sync');
+} catch (err) {
+  console.log('You must install the readline-sync module. Run the following');
+  console.log('command to install it:');
+  console.log();
+  console.log('  npm install');
+  console.log();
+
+  process.exit();
+}
 
 let wordToGuess = 'hello';
 
-let game = newGuessingGame('hello');
+function amountGuess(word) {
+  noRepeats = []
+
+  for (let element of wordToGuess) {
+    if (!noRepeats.includes(element)) {
+      noRepeats.push(element)
+    }
+
+  }
+  return noRepeats.length
+}
+amountGuess(wordToGuess)
+
+let game = newGuessingGame('onomatopoeia');
 
 console.log(`"Guessing" the word '${wordToGuess}', one letter at a time.`);
 console.log();
 
-for (let letter of wordToGuess) {
+for (let i = 0; i < noRepeats.length + 2; i++) {
+  letter = readlineSync.question("Guess a letter: ")
   console.log(`Guessing letter: ${letter}`);
 
   guessingGameMakeGuess(game, letter);
 
   console.log(`Current word is: ${game.currentWord}`);
   console.log();
+  if (guessingGameIsDone(game)) {
+    i = noRepeats.length + 2
+  }
+    ;
 }
 
 let isGameDone = guessingGameIsDone(game);
